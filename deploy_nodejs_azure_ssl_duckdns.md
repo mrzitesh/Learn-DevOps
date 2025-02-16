@@ -5,16 +5,49 @@ This guide helps you deploy a **Node.js application** on an **Azure Virtual Mach
 ## 🚀 Steps to Deploy a Node.js App on Azure VM
 
 ### ✅ Step 1: Create & Setup an Azure VM
+You can create an Azure VM using either the **Azure Portal (GUI method)** or **Azure CLI**.
+
+#### 🔹 GUI Method (Azure Portal)
 1. Go to **Azure Portal** → [https://portal.azure.com/](https://portal.azure.com/)
 2. **Create a New Virtual Machine**
    - **OS:** Ubuntu 22.04 LTS
    - **Size:** B1s (for small apps)
    - **Public IP:** Assign a static IP
    - **Inbound Ports:** Allow **SSH (22), HTTP (80), HTTPS (443)**
+   - **Authentication Type:** Password
+   - **Set a secure password for your VM**
 3. **Connect to your VM via SSH:**
    ```sh
    ssh username@your-public-ip
    ```
+
+#### 🔹 CLI Method (Azure CLI)
+1. **Login to Azure:**
+   ```sh
+   az login
+   ```
+2. **Create a resource group:**
+   ```sh
+   az group create --name MyResourceGroup --location eastus
+   ```
+3. **Create a VM with Password Authentication:**
+   ```sh
+   az vm create --resource-group MyResourceGroup --name MyVM --image Ubuntu2204 --admin-username azureuser --authentication-type password --admin-password "YourSecurePassword123" --size Standard_B1s
+   ```
+4. **Open required ports:**
+   ```sh
+   az vm open-port --resource-group MyResourceGroup --name MyVM --port 80 --priority 101
+   az vm open-port --resource-group MyResourceGroup --name MyVM --port 443 --priority 102
+   ```
+5. **Get the public IP:**
+   ```sh
+   az vm show --resource-group MyResourceGroup --name MyVM -d --query publicIpAddress -o tsv
+   ```
+6. **Connect to your VM via SSH:**
+   ```sh
+   ssh azureuser@your-public-ip
+   ```
+
 
 ### ✅ Step 2: Install Required Packages
 ```sh
