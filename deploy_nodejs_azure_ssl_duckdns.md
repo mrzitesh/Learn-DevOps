@@ -43,7 +43,11 @@ You can create an Azure VM using either the **Azure Portal (GUI method)** or **A
    ```sh
    az vm show --resource-group MyResourceGroup --name MyVM -d --query publicIpAddress -o tsv
    ```
-6. **Connect to your VM via SSH:**
+   **OR**
+   ```sh
+   az vm list-ip-addresses --resource-group MyResourceGroup --name MyVM -o table
+   ```
+7. **Connect to your VM via SSH:**
    ```sh
    ssh azureuser@your-public-ip
    ```
